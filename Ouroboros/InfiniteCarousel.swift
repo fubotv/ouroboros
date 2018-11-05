@@ -46,6 +46,15 @@ open class InfiniteCarousel: UICollectionView, UICollectionViewDataSource, UICol
         }
     }
     
+    @IBInspectable open var centeredScrollPosition: Bool = true {
+        didSet {
+            scrollPosition = centeredScrollPosition ? .centered : .left
+        }
+    }
+    
+    /// Focused cell position
+    private var scrollPosition: InfiniteScrollPosition = .centered
+    
     /// Whether or not to auto-scroll this carousel when the user is not interacting with it.
     @IBInspectable open var autoScroll: Bool = false
     
@@ -94,7 +103,7 @@ open class InfiniteCarousel: UICollectionView, UICollectionViewDataSource, UICol
     }
 
     /// Number of cells to buffer
-    open internal(set) var buffer: Int = 2
+    open internal(set) var buffer: Int = 4
     
     /// Cached count of current number of items
     var count = 0
@@ -137,7 +146,9 @@ open class InfiniteCarousel: UICollectionView, UICollectionViewDataSource, UICol
         guard count > 0 else {
             return 0
         }
-        return count + 2 * buffer
+        
+        let itemsPerPage: Int = Int(self.bounds.size.width/((self.collectionViewLayout as! Layout).totalItemWidth))
+        return count + buffer + itemsPerPage
     }
     
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -217,6 +228,15 @@ open class InfiniteCarousel: UICollectionView, UICollectionViewDataSource, UICol
         currentlyFocusedItem = manualFocusCell!.item
         setNeedsFocusUpdate()
     }
+
+    open override func reloadItems(at indexPaths: [IndexPath]) {
+        guard count > 0 else {
+            super.reloadItems(at: indexPaths)
+            return
+        }
+        let adjustedIntexPaths = carouselIndexPathsForOriginalIndexPaths(indexPaths: indexPaths)
+        super.reloadItems(at: adjustedIntexPaths)
+    }
     
     func scrollToItem(_ item: Int, animated: Bool) {
         if let initialOffset = (self.collectionViewLayout as! Layout).offsetForItemAtIndex(item) {
@@ -277,7 +297,18 @@ open class InfiniteCarousel: UICollectionView, UICollectionViewDataSource, UICol
         self.setContentOffset(CGPoint(x: currentOffset + jumpOffset, y: self.contentOffset.y),
             animated: false)
     }
-    
+
+    func carouselIndexPathsForOriginalIndexPaths(indexPaths: [IndexPath]) -> [IndexPath] {
+        return indexPaths.reduce([IndexPath]()) { (prev, index) -> [IndexPath] in
+            let adjustedIndex = IndexPath(row: index.row + buffer, section: index.section)
+            if index.row >= buffer && index.row < count - buffer {
+                return prev + [adjustedIndex]
+            }
+            let boundingIndexPath = IndexPath(row: (index.row + buffer + count) % (count * 2), section: index.section)
+            return prev + [adjustedIndex, boundingIndexPath]
+        }
+    }
+
     // MARK: - Layout
     
     class Layout: UICollectionViewFlowLayout {
@@ -298,8 +329,16 @@ open class InfiniteCarousel: UICollectionView, UICollectionViewDataSource, UICol
             guard let cellAttributes = self.layoutAttributesForItem(at: firstItemOnPage) else {
                 return nil
             }
+            
+            //counting the offset
+            let offset: CGFloat
+            switch carousel.scrollPosition {
+            case .centered:
             let pageWidth = CGFloat(pageSize) * (itemSize.width + minimumLineSpacing)
             let offset = ((carousel.bounds.size.width - pageWidth - minimumLineSpacing) / 2.0) + minimumLineSpacing
+            case .left:
+                offset = 90
+            }
             return cellAttributes.frame.origin.x - offset
         }
         
@@ -309,5 +348,12 @@ open class InfiniteCarousel: UICollectionView, UICollectionViewDataSource, UICol
             }
             return CGPoint(x: offset, y: proposedContentOffset.y)
         }
+    }
+}
+
+extension InfiniteCarousel {
+    public enum InfiniteScrollPosition : Int {
+        case left
+        case centered
     }
 }
