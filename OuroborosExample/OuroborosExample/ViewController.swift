@@ -11,8 +11,8 @@ import WillowTreeOuroboros
 
 class ViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
-    @IBOutlet weak var carousel2: InfiniteCarousel!
-    @IBOutlet weak var natGeo: InfiniteCarousel!
+//    @IBOutlet weak var carousel2: InfiniteCarousel!
+//    @IBOutlet weak var natGeo: InfiniteCarousel!
 
     let natGeoDataSource = NatGeoDataSource()
     
@@ -28,15 +28,22 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        carousel2.register(UINib(nibName: "SampleCell", bundle: nil), forCellWithReuseIdentifier: SampleCell.ID)
-
-        natGeo.dataSource = natGeoDataSource
+//        carousel2.register(UINib(nibName: "SampleCell", bundle: nil), forCellWithReuseIdentifier: SampleCell.ID)
+//
+//        natGeo.dataSource = natGeoDataSource
         
         view.addSubview(carousel)
     }
     
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 2
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return colors.count * 3
+        if section % 2 == 0 {
+            return colors.count * 3
+        }
+        return 1
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
