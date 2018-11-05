@@ -6,7 +6,7 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   WillowTreeOuroboros:
-    :path: ".."
+    :path: ..
 
 SPEC CHECKSUMS:
   WillowTreeOuroboros: 81645e8153220dc1e4a7d4c06ebd23177c110111

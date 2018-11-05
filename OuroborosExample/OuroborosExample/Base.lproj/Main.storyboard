@@ -41,6 +41,7 @@
                                         <real key="value" value="12"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="autoScroll" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="centeredScrollPosition" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outlet property="dataSource" destination="BYZ-38-t0r" id="3vr-t9-uym"/>
@@ -84,7 +85,7 @@
                                     </collectionViewCell>
                                 </cells>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="centeredScrollPosition" value="NO"/>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="centeredScrollPosition" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </collectionView>
                         </subviews>
