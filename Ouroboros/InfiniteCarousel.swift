@@ -206,10 +206,11 @@ open class InfiniteCarousel: UICollectionView, UICollectionViewDataSource, UICol
     }
 
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        guard let size = rootDelegate?.collectionView?(collectionView, layout: collectionViewLayout, sizeForItemAt:adjustedIndexPathForIndexPath(indexPath)) else {
-            return (collectionViewLayout as! Layout).itemSize
-        }
-        return size
+//        guard let size = rootDelegate?.collectionView?(collectionView, layout: collectionViewLayout, sizeForItemAt:adjustedIndexPathForIndexPath(indexPath)) else {
+//            return (collectionViewLayout as! Layout).itemSize
+//        }
+//        return size
+        return (collectionViewLayout as! Layout).itemSize
     }
 
     open override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
@@ -312,6 +313,9 @@ open class InfiniteCarousel: UICollectionView, UICollectionViewDataSource, UICol
     // MARK: - Layout
     
     class Layout: UICollectionViewFlowLayout {
+        var totalItemWidth: CGFloat {
+            return itemSize.width + minimumLineSpacing
+        }
         
         var carousel: InfiniteCarousel {
             guard let carousel = collectionView as? InfiniteCarousel else {
@@ -331,7 +335,7 @@ open class InfiniteCarousel: UICollectionView, UICollectionViewDataSource, UICol
             }
             
             //counting the offset
-            let offset: CGFloat
+            var offset: CGFloat = 0
             switch carousel.scrollPosition {
             case .centered:
             let pageWidth = CGFloat(pageSize) * (itemSize.width + minimumLineSpacing)
