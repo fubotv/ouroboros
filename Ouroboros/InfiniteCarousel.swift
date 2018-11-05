@@ -176,20 +176,16 @@ open class InfiniteCarousel: UICollectionView, UICollectionViewDataSource, UICol
             return 0
         }
         if shouldEnableInfiniteScroll {
-        let itemsPerPage: Int = Int(self.bounds.size.width/((self.collectionViewLayout as! Layout).totalItemWidth))
-        return count + buffer + itemsPerPage
+            let itemsPerPage: Int = Int(self.bounds.size.width/((self.collectionViewLayout as! Layout).totalItemWidth))
+            return count + buffer + itemsPerPage
         } else {
             return count
         }
     }
 
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if shouldEnableInfiniteScroll {
-            let adjustedPath = adjustedIndexPathForIndexPath(indexPath)
-            return rootDataSource.collectionView(collectionView, cellForItemAt: adjustedPath)
-        } else {
-            return rootDataSource.collectionView(collectionView, cellForItemAt: indexPath)
-        }
+        let adjustedPath = adjustedIndexPathForIndexPath(indexPath)
+        return rootDataSource.collectionView(collectionView, cellForItemAt: adjustedPath)
     }
 
 
@@ -199,62 +195,77 @@ open class InfiniteCarousel: UICollectionView, UICollectionViewDataSource, UICol
     }
 
     open func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return rootDelegate?.collectionView?(collectionView, shouldHighlightItemAt: indexPath) ?? true
+        let adjustedPath = adjustedIndexPathForIndexPath(indexPath)
+        return rootDelegate?.collectionView?(collectionView, shouldHighlightItemAt: adjustedPath) ?? true
     }
 
     open func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
-        rootDelegate?.collectionView?(collectionView, didHighlightItemAt: indexPath)
+        let adjustedPath = adjustedIndexPathForIndexPath(indexPath)
+        rootDelegate?.collectionView?(collectionView, didHighlightItemAt: adjustedPath)
     }
     open func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
-        rootDelegate?.collectionView?(collectionView, didUnhighlightItemAt: indexPath)
+        let adjustedPath = adjustedIndexPathForIndexPath(indexPath)
+        rootDelegate?.collectionView?(collectionView, didUnhighlightItemAt: adjustedPath)
     }
 
     open func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return rootDelegate?.collectionView?(collectionView, shouldSelectItemAt:indexPath) ?? true
+        let adjustedPath = adjustedIndexPathForIndexPath(indexPath)
+        return rootDelegate?.collectionView?(collectionView, shouldSelectItemAt:adjustedPath) ?? true
     }
 
     open func collectionView(_ collectionView: UICollectionView, shouldDeselectItemAt indexPath: IndexPath) -> Bool {
-        return rootDelegate?.collectionView?(collectionView, shouldDeselectItemAt: indexPath) ?? true
+        let adjustedPath = adjustedIndexPathForIndexPath(indexPath)
+        return rootDelegate?.collectionView?(collectionView, shouldDeselectItemAt: adjustedPath) ?? true
     }
 
     open func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        rootDelegate?.collectionView?(collectionView, didSelectItemAt: indexPath)
+        let adjustedPath = adjustedIndexPathForIndexPath(indexPath)
+        rootDelegate?.collectionView?(collectionView, didSelectItemAt: adjustedPath)
     }
 
     open func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        rootDelegate?.collectionView?(collectionView, didDeselectItemAt: indexPath)
+        let adjustedPath = adjustedIndexPathForIndexPath(indexPath)
+        rootDelegate?.collectionView?(collectionView, didDeselectItemAt: adjustedPath)
     }
 
     open func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        rootDelegate?.collectionView?(collectionView, willDisplay: cell, forItemAt: indexPath)
+        let adjustedPath = adjustedIndexPathForIndexPath(indexPath)
+        rootDelegate?.collectionView?(collectionView, willDisplay: cell, forItemAt: adjustedPath)
     }
 
     open func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
-        rootDelegate?.collectionView?(collectionView, willDisplaySupplementaryView: view, forElementKind: elementKind, at: indexPath)
+        let adjustedPath = adjustedIndexPathForIndexPath(indexPath)
+        rootDelegate?.collectionView?(collectionView, willDisplaySupplementaryView: view, forElementKind: elementKind, at: adjustedPath)
     }
 
     open func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        rootDelegate?.collectionView?(collectionView, didEndDisplaying: cell, forItemAt: indexPath)
+        let adjustedPath = adjustedIndexPathForIndexPath(indexPath)
+        rootDelegate?.collectionView?(collectionView, didEndDisplaying: cell, forItemAt: adjustedPath)
     }
 
     open func collectionView(_ collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, at indexPath: IndexPath) {
-        rootDelegate?.collectionView?(collectionView, didEndDisplayingSupplementaryView: view, forElementOfKind: elementKind, at: indexPath)
+        let adjustedPath = adjustedIndexPathForIndexPath(indexPath)
+        rootDelegate?.collectionView?(collectionView, didEndDisplayingSupplementaryView: view, forElementOfKind: elementKind, at: adjustedPath)
     }
 
     open func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return rootDelegate?.collectionView?(collectionView, shouldShowMenuForItemAt: indexPath) ?? true
+        let adjustedPath = adjustedIndexPathForIndexPath(indexPath)
+        return rootDelegate?.collectionView?(collectionView, shouldShowMenuForItemAt: adjustedPath) ?? true
     }
 
     open func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return rootDelegate?.collectionView?(collectionView, canPerformAction: action, forItemAt: indexPath, withSender: sender) ?? false
+        let adjustedPath = adjustedIndexPathForIndexPath(indexPath)
+        return rootDelegate?.collectionView?(collectionView, canPerformAction: action, forItemAt: adjustedPath, withSender: sender) ?? false
     }
 
     open func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-         rootDelegate?.collectionView?(collectionView, performAction: action, forItemAt: indexPath, withSender:sender)
+        let adjustedPath = adjustedIndexPathForIndexPath(indexPath)
+        rootDelegate?.collectionView?(collectionView, performAction: action, forItemAt: adjustedPath, withSender:sender)
     }
 
     open func collectionView(_ collectionView: UICollectionView, canFocusItemAt indexPath: IndexPath) -> Bool {
-        return rootDelegate?.collectionView?(collectionView, canFocusItemAt: indexPath) ?? true
+        let adjustedPath = adjustedIndexPathForIndexPath(indexPath)
+        return rootDelegate?.collectionView?(collectionView, canFocusItemAt: adjustedPath) ?? true
     }
 
     open func collectionView(_ collectionView: UICollectionView, shouldUpdateFocusIn context: UICollectionViewFocusUpdateContext) -> Bool {
