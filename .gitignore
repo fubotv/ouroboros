@@ -28,3 +28,7 @@ xcuserdata
 
 **.DS_Store
 Ouroboros.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+
+\.DS_Store
+
+Ouroboros\.xcodeproj/project\.xcworkspace/xcshareddata/IDEWorkspaceChecks\.plist
