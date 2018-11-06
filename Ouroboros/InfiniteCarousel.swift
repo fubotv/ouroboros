@@ -149,7 +149,7 @@ open class InfiniteCarousel: UICollectionView, UICollectionViewDataSource, UICol
     private var minimumItems: Int = 2
     
     /// Showing different cell on the end
-    var isWithMoreItem: Bool = false
+    open var isWithMoreItem: Bool = false
     
     /// Returns the index path of the root data source item given an index path from this collection
     /// view, which naturally includes the buffer cells.
