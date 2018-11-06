@@ -419,20 +419,40 @@ open class InfiniteCarousel: UICollectionView, UICollectionViewDataSource, UICol
     }
     
     func jump(_ direction: JumpDirection) {
-        let currentOffset = self.contentOffset.x
         var jumpOffset: CGFloat = 0
         
-        for index in 0..<count {
-            let indexpath = IndexPath(item: index, section: 0)
-            jumpOffset += collectionView(self, layout: collectionViewLayout, sizeForItemAt: indexpath).width + (collectionViewLayout as! Layout).minimumLineSpacing
+        if scrollPosition == .left,
+            let offset = (collectionViewLayout as! Layout).offsetForItemAtIndex(currentlyFocusedItem) {
+            
+            var itemWidth = (collectionViewLayout as! Layout).itemSize.width
+            if case .backward = direction {
+                if isWithMoreItem {
+                    itemWidth = -(collectionViewLayout as! Layout).moreItemSize.width
+                }else {
+                    itemWidth *= -1
+                }
+            }
+            jumpOffset = offset + itemWidth
+            
+        } else {
+            
+            let currentOffset = self.contentOffset.x
+            var offset: CGFloat = 0
+            
+            for index in 0..<count {
+                let indexpath = IndexPath(item: index, section: 0)
+                offset += collectionView(self, layout: collectionViewLayout, sizeForItemAt: indexpath).width + (collectionViewLayout as! Layout).minimumLineSpacing
+            }
+            
+            if case .backward = direction {
+                offset *= -1
+            }
+            
+            jumpOffset = currentOffset + offset
+            
         }
         
-        if case .backward = direction {
-            jumpOffset *= -1
-        }
-        
-        let offset = (collectionViewLayout as! Layout).offsetForItemAtIndex(currentlyFocusedItem)
-        self.setContentOffset(CGPoint(x: offset ?? currentOffset + jumpOffset, y: self.contentOffset.y),
+        self.setContentOffset(CGPoint(x: jumpOffset, y: self.contentOffset.y),
                               animated: false)
     }
     
