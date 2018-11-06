@@ -23,7 +23,8 @@
 import UIKit
 
 open class InfiniteCarouselLayout: UICollectionViewFlowLayout {
-    var moreItemSize: CGSize = CGSize(width: 0, height: 0)
+    /// more item size if it is needed
+    open var moreItemSize: CGSize = CGSize(width: 0, height: 0)
 }
 
 open class InfiniteCarousel: UICollectionView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
