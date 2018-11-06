@@ -22,7 +22,7 @@
 
 import UIKit
 
-class InfiniteCarouselLayout: UICollectionViewFlowLayout {
+open class InfiniteCarouselLayout: UICollectionViewFlowLayout {
     var moreItemSize: CGSize = CGSize(width: 0, height: 0)
 }
 
